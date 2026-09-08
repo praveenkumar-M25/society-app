@@ -121,7 +121,23 @@ can be swapped or mocked independently.
 - Unit/integration tests for the service layer.
 
 ## Screenshots
+## Screenshots
 
-_Add screenshots here after running the app (Login, Notice Board,
-Complaints, Bookings, Directory)._
+### Login
+![Login](screenshots/Login.png)
+
+### Register
+![Register](screenshots/Register.png)
+
+### Digital Notice Board
+![Notice Board](screenshots/dashboard.png)
+
+### Complaints
+![Complaints](screenshots/Complaints.png)
+
+### Facility Booking
+![Bookings](screenshots/Bookings.png)
+
+### Member Directory
+![Directory](screenshots/Directory.png)
 # society-app
