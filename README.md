@@ -124,3 +124,4 @@ can be swapped or mocked independently.
 
 _Add screenshots here after running the app (Login, Notice Board,
 Complaints, Bookings, Directory)._
+# society-app
