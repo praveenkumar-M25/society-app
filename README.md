@@ -173,19 +173,19 @@ can be swapped or mocked independently.
 ## Screenshots
 
 ### Login
-![Login](screenshots/login.png)
+![Login](screenshots/Login.png)
 
 ### Register
-![Register](screenshots/register.png)
+![Register](screenshots/Register.png)
 
 ### Digital Notice Board (Dashboard)
-![Notice Board](screenshots/dashboard.png)
+![Notice Board](screenshots/Notice_board.png)
 
 ### Events & Meetings
 ![Events](screenshots/events.png)
 
 ### Complaints & Service Requests
-![Complaints](screenshots/complaints.png)
+![Complaints](screenshots/Complaints.png)
 
 ### Maintenance Payments
 ![Payments](screenshots/payments.png)
@@ -197,7 +197,7 @@ can be swapped or mocked independently.
 ![Emergency Contacts](screenshots/emergency.png)
 
 ### Facility Booking
-![Bookings](screenshots/bookings.png)
+![Bookings](screenshots/Bookings.png)
 
 ### Polls & Surveys
 ![Polls](screenshots/polls.png)
@@ -209,7 +209,7 @@ can be swapped or mocked independently.
 ![Marketplace](screenshots/marketplace.png)
 
 ### Member Directory
-![Directory](screenshots/directory.png)
+![Directory](screenshots/Directory.png)
 
 ### Profile Management
 ![Profile](screenshots/profile.png)
