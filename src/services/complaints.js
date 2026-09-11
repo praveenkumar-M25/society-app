@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   orderBy,
@@ -41,4 +42,8 @@ export function raiseComplaint({ title, description, category, raisedBy, flatNum
 
 export function updateComplaintStatus(id, status) {
   return updateDoc(doc(db, 'complaints', id), { status })
+}
+
+export function deleteComplaint(id) {
+  return deleteDoc(doc(db, 'complaints', id))
 }

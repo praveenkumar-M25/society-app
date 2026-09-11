@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import {
   STATUS,
+  deleteComplaint,
   raiseComplaint,
   subscribeComplaints,
   updateComplaintStatus,
@@ -41,6 +42,12 @@ export default function Complaints() {
       setForm({ title: '', description: '', category: CATEGORIES[0] })
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  async function handleDelete(id) {
+    if (window.confirm('Delete this resolved complaint? This cannot be undone.')) {
+      await deleteComplaint(id)
     }
   }
 
@@ -106,6 +113,14 @@ export default function Complaints() {
                     {s}
                   </button>
                 ))}
+              </div>
+            )}
+
+            {!isAdmin && item.status === STATUS.RESOLVED && (
+              <div className="status-actions">
+                <button className="delete-btn" onClick={() => handleDelete(item.id)}>
+                  Delete
+                </button>
               </div>
             )}
           </li>
