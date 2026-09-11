@@ -5,6 +5,8 @@ import { subscribeComplaints, STATUS } from '../services/complaints'
 import { subscribeBookings } from '../services/bookings'
 import { Loader, EmptyState, ErrorState } from '../components/StateViews'
 import { NoticeIcon, ComplaintIcon, BookingIcon } from '../components/Icons'
+import PageHeader from '../components/PageHeader'
+import { HeroNotice } from '../components/Icons'
 
 export default function Announcements() {
   const { profile } = useAuth()
