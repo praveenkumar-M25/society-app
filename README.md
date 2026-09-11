@@ -11,27 +11,57 @@ bookings, and a member directory — with role-based access (Resident vs Admin).
 
 ## Features Implemented
 
-- **Login / Registration** — Firebase Authentication (email/password), with
-  role selection (Resident or Admin) captured at signup.
+- **Login / Registration** — Firebase Authentication (email/password + Google
+  Sign-In), with role selection (Resident, Admin, or Security Staff) at
+  signup. Email verification is required before first login; Google
+  Sign-In only works for already-registered emails.
 - **Digital Notice Board** — Admins post announcements; all residents see
-  them in real time (Firestore live listener).
+  them in real time. Dashboard also shows a welcome banner with quick
+  stats (announcements, open complaints, upcoming bookings).
+- **Events & Meetings** — Admins schedule society events/meetings with
+  date, time, and location; residents RSVP to confirm attendance.
 - **Complaint / Service Request Management** — Residents raise complaints
-  with a category; admins triage and update status (Open → In Progress →
-  Resolved). Residents only see their own complaints; admins see all.
-- **Facility Booking** — Residents book a time slot for shared facilities
-  (clubhouse, gym, pool, etc.) with basic double-booking prevention.
-- **Member Directory** — Searchable list of residents by name or flat number.
+  by category; admins triage and update status (Open → In Progress →
+  Resolved). Residents can delete their own complaint once resolved.
+- **Maintenance Payment Tracking** — Admins record maintenance dues per
+  flat per month; residents view their own payment status; admins mark
+  payments as Paid.
+- **Visitor Management** — Residents log expected visitors; admins and
+  security staff view and update visitor status (Expected → Checked In →
+  Checked Out).
+- **Emergency Contacts** — Admin-maintained directory of emergency
+  numbers (police, fire, security, etc.), one-tap call links for
+  residents.
+- **Facility Booking** — Residents book shared facility time slots with
+  basic double-booking prevention.
+- **Polls & Surveys** — Admins create polls with multiple options;
+  residents vote once (enforced via a Firestore transaction) and see
+  live results as percentage bars.
+- **Community Discussions** — Any member can start a discussion thread
+  and reply to others' threads.
+- **Buy / Sell / Rent Marketplace** — Residents post listings to buy,
+  sell, or rent items, with contact info; filterable by listing type.
+- **Society Member Directory** — Searchable list of residents with
+  avatar initials, flat number, and role.
+- **Profile Management** — Residents can update their own name and flat
+  number.
+- **Resident / Admin / Security Roles** — Role-based access throughout:
+  admins manage announcements/payments/events, security staff manage
+  visitor check-in/out alongside admins, residents get resident-scoped
+  views.
+- **In-app Notifications** — A notification bell shows unread
+  announcement counts since the user's last visit.
 
-Each screen handles **loading, empty, and error states** explicitly rather
-than assuming the happy path.
+Each screen handles **loading, empty, and error states** explicitly.
+
 
 ## Technology Stack
 
 - React 18 + Vite
 - React Router v6
-- Firebase Authentication + Cloud Firestore
-- Plain CSS (design tokens in `src/index.css`) — no UI framework, for full
-  control over the design system
+- Firebase Authentication (Email/Password + Google Sign-In) + Cloud Firestore
+- Plain CSS (design tokens in `src/index.css`) — glassmorphism, gradients,
+  and motion, no UI framework
 
 ## Architecture
 
@@ -47,6 +77,14 @@ src/
     complaints.js
     bookings.js
     directory.js
+    polls.js,
+    profile.js,
+    emergencyContacts.js, 
+    events.js,
+    payments.js, 
+    visitors.js, 
+    discussions.js, 
+    marketplace.js
   components/
     Navbar.jsx
     ProtectedRoute.jsx # Route guard, optional role restriction
