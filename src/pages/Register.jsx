@@ -3,11 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Register() {
-  const { register } = useAuth()
+  const { register, logout } = useAuth()
   const navigate = useNavigate()
   const [form, setForm] = useState({ name: '', flatNumber: '', email: '', password: '', role: 'resident' })
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [done, setDone] = useState(false)
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
@@ -19,12 +20,28 @@ export default function Register() {
     setSubmitting(true)
     try {
       await register(form)
-      navigate('/dashboard')
+      await logout() // require verification before first real login
+      setDone(true)
     } catch (err) {
       setError('Registration failed. The email may already be in use.')
     } finally {
       setSubmitting(false)
     }
+  }
+
+  if (done) {
+    return (
+      <div className="auth-screen">
+        <div className="auth-card">
+          <h1>Check your inbox</h1>
+          <p className="auth-subtitle">
+            We've sent a verification link to <strong>{form.email}</strong>. Please verify
+            your email, then sign in.
+          </p>
+          <Link to="/login"><button type="button">Go to sign in</button></Link>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -58,6 +75,7 @@ export default function Register() {
           <select value={form.role} onChange={update('role')}>
             <option value="resident">Resident</option>
             <option value="admin">Admin / Committee member</option>
+            <option value="security">Security Staff</option>
           </select>
         </label>
 
