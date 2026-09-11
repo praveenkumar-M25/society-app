@@ -89,9 +89,21 @@ src/
     Navbar.jsx
     ProtectedRoute.jsx # Route guard, optional role restriction
     StateViews.jsx     # Shared Loader / EmptyState / ErrorState
-  pages/
+    pages/
     Login.jsx, Register.jsx
-    Announcements.jsx, Complaints.jsx, Bookings.jsx, Directory.jsx
+    Announcements.jsx       # Digital Notice Board + dashboard stats
+    Events.jsx              # Events & Meetings with RSVP
+    Complaints.jsx          # Complaint management
+    Payments.jsx            # Maintenance payment tracking
+    Visitors.jsx            # Visitor management
+    EmergencyContacts.jsx   # Emergency contacts directory
+    Bookings.jsx            # Facility booking
+    Polls.jsx               # Polls & surveys
+    Discussions.jsx         # Community discussions
+    Marketplace.jsx         # Buy/Sell/Rent listings
+    Directory.jsx           # Member directory
+    Profile.jsx             # Profile management
+    
   App.jsx              # Route definitions
   main.jsx             # Entry point
 ```
@@ -159,23 +171,45 @@ can be swapped or mocked independently.
 - Unit/integration tests for the service layer.
 
 ## Screenshots
-## Screenshots
 
 ### Login
-![Login](screenshots/Login.png)
+![Login](screenshots/login.png)
 
 ### Register
-![Register](screenshots/Register.png)
+![Register](screenshots/register.png)
 
-### Digital Notice Board
+### Digital Notice Board (Dashboard)
 ![Notice Board](screenshots/dashboard.png)
 
-### Complaints
-![Complaints](screenshots/Complaints.png)
+### Events & Meetings
+![Events](screenshots/events.png)
+
+### Complaints & Service Requests
+![Complaints](screenshots/complaints.png)
+
+### Maintenance Payments
+![Payments](screenshots/payments.png)
+
+### Visitor Management
+![Visitors](screenshots/visitors.png)
+
+### Emergency Contacts
+![Emergency Contacts](screenshots/emergency.png)
 
 ### Facility Booking
-![Bookings](screenshots/Bookings.png)
+![Bookings](screenshots/bookings.png)
+
+### Polls & Surveys
+![Polls](screenshots/polls.png)
+
+### Community Discussions
+![Discussions](screenshots/discussions.png)
+
+### Buy / Sell / Rent Marketplace
+![Marketplace](screenshots/marketplace.png)
 
 ### Member Directory
-![Directory](screenshots/Directory.png)
+![Directory](screenshots/directory.png)
 
+### Profile Management
+![Profile](screenshots/profile.png)
