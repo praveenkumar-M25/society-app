@@ -43,9 +43,13 @@ export default function Register() {
       </div>
     )
   }
-
-  return (
+      return (
     <div className="auth-screen">
+      <div className="auth-title-block">
+        <div className="auth-title-icon">🏡</div>
+        <h2 className="auth-project-title">Greenview Society</h2>
+        <p className="auth-project-tagline">Community Management Platform</p>
+      </div>
       <form className="auth-card" onSubmit={handleSubmit}>
         <h1>Create your account</h1>
         <p className="auth-subtitle">Join your residential community</p>

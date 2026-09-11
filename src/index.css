@@ -76,7 +76,7 @@ input:focus, select:focus, textarea:focus {
 .page, .auth-card { animation: fadeSlideIn 0.45s ease both; }
 
 @media (prefers-reduced-motion: reduce) {
-  .page, .auth-card { animation: none; }
+  .page, .auth-card { animation: fadeSlideIn 0.45s ease both; }
 }
 
 /* ---- Navbar (glass, sticky) ---- */
@@ -490,12 +490,12 @@ main {
 }
 .divider span { padding: 0 0.8rem; }
 
-.google-btn {
+.auth-card .google-btn {
   width: 100%;
   padding: 0.7rem;
-  background: #fff;
-  color: var(--ink);
-  border: 1px solid var(--line);
+  background: linear-gradient(135deg, var(--forest), var(--forest-dark)) !important;
+  color: #fff !important;
+  border: none;
   border-radius: 8px;
   font-weight: 600;
   display: flex;
@@ -503,9 +503,10 @@ main {
   justify-content: center;
   gap: 0.6rem;
 }
-.google-btn:hover {
-  box-shadow: var(--shadow-sm);
-  background: #FAFAFA;
+.auth-card .google-btn:hover {
+  box-shadow: var(--shadow-md);
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
 /* ---- Polls ---- */
@@ -776,4 +777,540 @@ main {
     overflow-x: auto;
     width: 100%;
   }
+}
+
+/* ---- 3D depth effects ---- */
+
+/* Give the page perspective so child 3D transforms feel real */
+main, .auth-screen {
+  perspective: 1200px;
+}
+
+/* Cards tilt slightly in 3D on hover instead of just lifting flat */
+.card {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px) rotateX(4deg) rotateY(-2deg) scale(1.01);
+  box-shadow:
+    0 20px 40px rgba(27, 36, 29, 0.18),
+    0 2px 8px rgba(27, 36, 29, 0.1);
+}
+
+/* Hero banner gets a floating 3D layer behind the text */
+.hero-banner {
+  transform-style: preserve-3d;
+}
+
+.hero-banner::before {
+  transform: translateZ(-40px) scale(1.3);
+}
+
+/* Stat cards lift toward the viewer on hover */
+.stat-card {
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.stat-card:hover {
+  transform: translateZ(20px) scale(1.04);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Auth card gets a gentle 3D entrance + hover tilt */
+.auth-card {
+  transform-style: preserve-3d;
+  animation: card3DIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes card3DIn {
+  from { opacity: 0; transform: rotateX(12deg) translateY(30px) scale(0.96); }
+  to { opacity: 1; transform: rotateX(0) translateY(0) scale(1); }
+}
+
+/* Buttons press "into" the screen on click for tactile depth */
+button {
+  transform-style: preserve-3d;
+}
+button:active {
+  transform: scale(0.96) translateZ(-4px);
+}
+
+/* Avatar circles get a subtle 3D pop on hover */
+.avatar-circle {
+  transition: transform 0.25s ease;
+}
+.member-card:hover .avatar-circle {
+  transform: rotateY(20deg) scale(1.1);
+}
+
+/* Sidebar nav links slide with a slight 3D push when active */
+.sidebar-nav a {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease, background 0.15s ease;
+}
+.sidebar-nav a:hover {
+  transform: translateX(4px) translateZ(10px);
+}
+
+/* Poll bars grow with a subtle depth shadow */
+.poll-bar-fill {
+  box-shadow: 0 2px 6px rgba(47, 82, 51, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .stat-card, .auth-card, button, .avatar-circle, .sidebar-nav a {
+    animation: none !important;
+    transition: none !important;
+  }
+  .card:hover, .stat-card:hover, .member-card:hover .avatar-circle, .sidebar-nav a:hover {
+    transform: none !important;
+  }
+}
+
+/* ---- Page header (icon badge + title) ---- */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+.page-header-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--forest);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.page-header h1 {
+  margin-bottom: 0.2rem;
+}
+.page-header h1::after { display: none; }
+
+.page-header-sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ================================================================
+   FINAL POLISH PASS
+   ================================================================ */
+
+/* Custom scrollbar — subtle, on-brand, not the default grey */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(47, 82, 51, 0.25);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(47, 82, 51, 0.45); }
+
+/* Selection color matches the theme instead of default blue */
+::selection { background: rgba(201, 125, 49, 0.25); color: var(--ink); }
+
+/* Subtle grain/texture on the page background for depth (very light) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background-image: radial-gradient(rgba(27,36,29,0.035) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.app-shell, .auth-screen { position: relative; z-index: 1; }
+
+/* Buttons: consistent refined base + shine sweep on hover */
+button:not(.icon-btn):not(.filter-row button):not(.status-actions button):not(.sidebar-logout):not(.bell-btn) {
+  position: relative;
+  overflow: hidden;
+}
+button:not(:disabled):hover {
+  filter: brightness(1.04);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Skeleton shimmer loader — replaces the plain spinner look for a
+   more polished "content is loading" feel on first paint */
+.state-view .spinner {
+  border-width: 2.5px;
+}
+
+/* Cards: refined border + subtle inner highlight for a premium glass edge */
+.card {
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Badges get a tiny dot indicator for quicker scanning */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* Inputs: refined resting state with a faint inner shadow for depth */
+input, select, textarea {
+  box-shadow: inset 0 1px 2px rgba(27, 36, 29, 0.04);
+}
+
+/* Sidebar brand icon gets a soft glow */
+.sidebar .brand svg {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.35));
+}
+
+/* Active nav item gets a small left accent bar for clearer state */
+.sidebar-nav a.active {
+  position: relative;
+}
+.sidebar-nav a.active::before {
+  content: '';
+  position: absolute;
+  left: -0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--ochre);
+  border-radius: 3px;
+}
+
+/* Empty states get a soft dashed frame instead of floating text alone */
+.state-view.empty {
+  border: 1.5px dashed var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Smooth, consistent focus ring across all interactive elements
+   (accessibility + polish) */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: 2px;
+}
+
+/* Headings inside cards get tighter letter spacing for a crafted feel */
+.card h3 { letter-spacing: -0.01em; }
+
+/* Subtle divider glow under the sticky sidebar user block */
+.sidebar-user {
+  position: relative;
+}
+.sidebar-user::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -0.6rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+}
+
+/* ================================================================
+   ADVANCED 3D ANIMATION PASS
+   ================================================================ */
+
+/* Floating ambient orbs behind the sidebar for depth (pure CSS, no JS) */
+/* Floating ambient orbs behind the sidebar for depth (pure CSS, no JS) */
+.sidebar {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.sidebar::before, .sidebar::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%);
+  animation: floatOrb 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.sidebar::before { width: 180px; height: 180px; top: -60px; right: -80px; animation-delay: 0s; }
+.sidebar::after { width: 120px; height: 120px; bottom: 10%; left: -60px; animation-delay: -4s; }
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(10px, -20px) scale(1.1); }
+}
+
+/* Hero banner icon-badge floats gently, like it's hovering in 3D space */
+.stat-card svg {
+  animation: floatIcon 3s ease-in-out infinite;
+}
+.stat-card:nth-child(2) svg { animation-delay: -1s; }
+.stat-card:nth-child(3) svg { animation-delay: -2s; }
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0) rotateZ(0deg); }
+  50% { transform: translateY(-4px) rotateZ(-4deg); }
+}
+
+/* Page header icon badge gets a 3D flip-in entrance + idle tilt on hover */
+.page-header-icon {
+  transform-style: preserve-3d;
+  animation: badgeFlipIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition: transform 0.3s ease;
+}
+.page-header-icon:hover {
+  transform: rotateY(15deg) rotateX(-8deg) scale(1.08);
+}
+
+@keyframes badgeFlipIn {
+  from { opacity: 0; transform: rotateY(90deg) scale(0.7); }
+  to { opacity: 1; transform: rotateY(0) scale(1); }
+}
+
+/* Buttons get a light "shine sweep" pass on hover, like reflected light */
+.inline-form button, .auth-card button, .google-btn {
+  position: relative;
+  overflow: hidden;
+}
+.inline-form button::after, .auth-card button::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.inline-form button:hover::after, .auth-card button:hover::after {
+  left: 125%;
+}
+
+/* Sidebar logo does a slow continuous 3D wobble — subtle "alive" feel */
+.sidebar .brand svg {
+  animation: logoWobble 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes logoWobble {
+  0%, 100% { transform: rotateY(0deg); }
+  50% { transform: rotateY(15deg); }
+}
+
+/* Poll bar fill gets a shimmer moving across it while it's "counting" */
+.poll-bar-fill {
+  position: relative;
+  overflow: hidden;
+}
+.poll-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmerSweep 2s ease-in-out infinite;
+}
+
+@keyframes shimmerSweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Avatar chip in navbar gently spins in 3D on hover for a fun detail */
+.avatar-chip {
+  transition: transform 0.4s ease;
+}
+.sidebar-user:hover .avatar-chip {
+  transform: rotateY(360deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar::before, .sidebar::after,
+  .stat-card svg,
+  .page-header-icon,
+  .sidebar .brand svg,
+  .poll-bar-fill::after,
+  .avatar-chip {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- 3D page-enter transition (replaces the flat fade for .page) ---- */
+.page {
+  animation: page3DEnter 0.55s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+  transform-origin: left center;
+}
+
+@keyframes page3DEnter {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(8deg) translateX(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) translateX(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page { animation: none !important; }
+}
+
+/* ================================================================
+   NEAT + COLORFUL PASS
+   ================================================================ */
+
+:root {
+  --accent-teal: #2A7F7E;
+  --accent-coral: #C9553D;
+  --accent-gold: #B8912F;
+  --accent-plum: #6B4E71;
+}
+
+/* Consistent, neat spacing rhythm across every page */
+.page { padding-bottom: 1rem; }
+.page > *:not(.page-header):not(:last-child) { margin-bottom: 1.6rem; }
+
+/* Cards cycle through soft accent colors on their left border + icon
+   tint, so a long list doesn't look monotone — still calm, not loud */
+.card-list .card:nth-child(5n+1) { border-left-color: var(--forest); }
+.card-list .card:nth-child(5n+2) { border-left-color: var(--ochre); }
+.card-list .card:nth-child(5n+3) { border-left-color: var(--accent-teal); }
+.card-list .card:nth-child(5n+4) { border-left-color: var(--accent-plum); }
+.card-list .card:nth-child(5n+5) { border-left-color: var(--accent-coral); }
+
+/* Card title gets a colored accent dot matching its border, for a
+   neat "categorized" look at a glance */
+.card h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card h3::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.card-list .card:nth-child(5n+1) h3 { color: var(--forest-dark); }
+.card-list .card:nth-child(5n+2) h3 { color: #8A5A00; }
+.card-list .card:nth-child(5n+3) h3 { color: var(--accent-teal); }
+.card-list .card:nth-child(5n+4) h3 { color: var(--accent-plum); }
+.card-list .card:nth-child(5n+5) h3 { color: var(--accent-coral); }
+
+/* Page header icon badges get a soft colorful ring instead of plain border */
+.page-header-icon {
+  background: linear-gradient(135deg, rgba(47,82,51,0.08), rgba(201,125,49,0.08));
+  border: 1.5px solid rgba(47,82,51,0.15);
+}
+
+/* Stat cards on the dashboard each get their own accent tint */
+.stat-card:nth-child(1) { border-color: rgba(255,255,255,0.3); }
+.stat-card:nth-child(2) { background: rgba(201,125,49,0.18); }
+.stat-card:nth-child(3) { background: rgba(42,127,126,0.18); }
+
+/* Section labels (card-meta) get a touch more color instead of flat grey */
+.card-meta {
+  color: var(--forest-dark);
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+/* Neat divider before status-action rows so buttons don't feel cramped
+   against the description text above them */
+.status-actions {
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--line);
+}
+
+/* Filter/tab-style buttons (marketplace) get colorful active states */
+.filter-row button:nth-child(1).active { background: var(--forest); border-color: var(--forest); }
+.filter-row button:nth-child(2).active { background: var(--accent-coral); border-color: var(--accent-coral); }
+.filter-row button:nth-child(3).active { background: var(--accent-teal); border-color: var(--accent-teal); }
+.filter-row button:nth-child(4).active { background: var(--accent-gold); border-color: var(--accent-gold); }
+
+/* Neat consistent radius + spacing across all form fields for a tidy grid feel */
+.inline-form { gap: 0.85rem; }
+.inline-form input, .inline-form select, .inline-form textarea {
+  border-radius: 10px;
+}
+
+/* Sidebar section groups get a little breathing room + label polish */
+.sidebar-nav a { letter-spacing: 0.01em; }
+
+/* ================================================================
+   AUTH SCREEN: BACKGROUND IMAGE + PROJECT TITLE + 3D EFFECTS
+   ================================================================ */
+
+.auth-screen {
+  background-image:
+    url('/community-bg.svg'),
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 40%),
+    linear-gradient(160deg, var(--forest-dark), var(--forest) 55%, var(--paper) 55%);
+  background-repeat: no-repeat;
+  background-size: cover, auto, auto;
+  background-position: bottom center, center, center;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-title-block {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  perspective: 800px;
+  animation: titleDropIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes titleDropIn {
+  from { opacity: 0; transform: translateY(-30px) rotateX(30deg); }
+  to { opacity: 1; transform: translateY(0) rotateX(0deg); }
+}
+
+.auth-title-icon {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3));
+  animation: floatIcon 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+.auth-project-title {
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin: 0.3rem 0 0.1rem;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  letter-spacing: -0.01em;
+}
+
+.auth-project-tagline {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+  margin: 0;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-title-block, .auth-title-icon { animation: none !important; }
 }
