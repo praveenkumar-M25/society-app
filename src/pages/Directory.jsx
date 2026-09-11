@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react'
 import { fetchMembers } from '../services/directory'
 import { Loader, EmptyState, ErrorState } from '../components/StateViews'
 
+const AVATAR_COLORS = ['#2F5233', '#C97D31', '#4C7850', '#8A5A00', '#1B3620']
+
+function colorFor(name = '') {
+  const code = name.charCodeAt(0) || 0
+  return AVATAR_COLORS[code % AVATAR_COLORS.length]
+}
+
 export default function Directory() {
   const [members, setMembers] = useState([])
   const [status, setStatus] = useState('loading')
@@ -39,9 +46,14 @@ export default function Directory() {
 
       <ul className="card-list">
         {filtered.map((m) => (
-          <li key={m.id} className="card">
-            <h3>{m.name}</h3>
-            <span className="card-meta">Flat {m.flatNumber} · {m.role}</span>
+          <li key={m.id} className="card member-card">
+            <span className="avatar-circle" style={{ background: colorFor(m.name) }}>
+              {m.name?.[0]?.toUpperCase() || '?'}
+            </span>
+            <div>
+              <h3>{m.name}</h3>
+              <span className="card-meta">Flat {m.flatNumber} · {m.role}</span>
+            </div>
           </li>
         ))}
       </ul>
