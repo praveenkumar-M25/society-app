@@ -140,4 +140,4 @@ can be swapped or mocked independently.
 
 ### Member Directory
 ![Directory](screenshots/Directory.png)
-# society-app
+
